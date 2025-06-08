@@ -1,0 +1,1 @@
+Run with JVM option `--add-opens java.base/sun.nio.ch=ALL-UNNAMED` due to Aeron usage
