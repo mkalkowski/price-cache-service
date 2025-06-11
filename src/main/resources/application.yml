@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: matsuri-price-cache-service
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+# Aeron Configuration
+aeron:
+  channel: aeron:udp?endpoint=localhost:40123
+  stream:
+    id: 1001
+
+
+# Management endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
