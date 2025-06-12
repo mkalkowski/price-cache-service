@@ -10,6 +10,7 @@ spring:
 
 # Aeron Configuration
 aeron:
+  queueCapacity: 1048576
   channel: aeron:udp?endpoint=localhost:40123
   stream:
     id: 1001

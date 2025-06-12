@@ -30,10 +30,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class AeronPriceDistributionService implements PriceDistributionService {
 
     private static final Logger logger = LoggerFactory.getLogger(AeronPriceDistributionService.class);
-    private static final int QUEUE_CAPACITY = 1024*1024; // warning this may get full and block main thread
 
-    private final LinkedBlockingQueue<String> linkedBlockingQueue = new LinkedBlockingQueue<>(QUEUE_CAPACITY);
     private final ObjectMapper objectMapper;
+    private LinkedBlockingQueue<String> linkedBlockingQueue;
     private Aeron aeron;
     private Publication publication;
     private MediaDriver mediaDriver;
@@ -45,9 +44,13 @@ public class AeronPriceDistributionService implements PriceDistributionService {
     @Value("${aeron.stream.id:1001}")
     private int streamId;
 
+    @Value("${aeron.queueCapacity:1048576}")
+    private int queueCapacity; // warning this may get full and block main thread
+
     public AeronPriceDistributionService() {
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
+
     }
 
     @PostConstruct
@@ -55,6 +58,7 @@ public class AeronPriceDistributionService implements PriceDistributionService {
     public void start() {
         try {
             logger.info("Starting Aeron price distribution service");
+            linkedBlockingQueue = new LinkedBlockingQueue<>(queueCapacity); // so much more to be improved than queue size - expiration policy, how to behave if full, competing consumers
 
             final MediaDriver.Context mediaDriverCtx = new MediaDriver.Context()
                     .dirDeleteOnStart(true)
