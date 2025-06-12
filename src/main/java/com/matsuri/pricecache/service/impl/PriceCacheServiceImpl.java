@@ -8,6 +8,7 @@ import com.matsuri.pricecache.service.PriceDistributionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,8 +23,10 @@ import java.util.Optional;
 public class PriceCacheServiceImpl implements PriceCacheService {
     
     private static final Logger logger = LoggerFactory.getLogger(PriceCacheServiceImpl.class);
-    private static final int RETENTION_DAYS = 30;
-    
+
+    @Value("${cleanup.retentionDays:30}")
+    private int retentionDays;
+
     private final PriceRepository priceRepository;
     private final PriceDistributionService distributionService;
 
@@ -73,7 +76,7 @@ public class PriceCacheServiceImpl implements PriceCacheService {
 
     @Override
     public void cleanupOldPrices() {
-        LocalDateTime cutoffDate = LocalDateTime.now().minusDays(RETENTION_DAYS);
+        LocalDateTime cutoffDate = LocalDateTime.now().minusDays(retentionDays);
         logger.info("Cleaning up prices older than {}", cutoffDate);
         
         int countBefore = priceRepository.count();

@@ -24,7 +24,7 @@ public class PriceCleanupService {
         this.priceCacheService = priceCacheService;
     }
 
-    @Scheduled(cron = "0 0 2 * * ?") // Run daily at 2 AM TODO run when Asia+EU+US markets are closed
+    @Scheduled(cron = "${cleanup.schedule}")
     public void scheduledCleanup() {
         long start = System.currentTimeMillis();
         logger.info("Starting scheduled price cleanup");

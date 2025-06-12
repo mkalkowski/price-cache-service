@@ -14,6 +14,9 @@ aeron:
   stream:
     id: 1001
 
+cleanup:
+  schedule: "0 0 2 * * ?"
+  retentionDays: 30
 
 # Management endpoints
 management:
