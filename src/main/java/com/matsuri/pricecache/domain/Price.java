@@ -42,7 +42,7 @@ public class Price {
     public LocalDateTime getTimestamp() { return timestamp; }
     public String getCurrency() { return currency; }
 
-    public String getCompositeKey() {
+    public String getCompositeKey() { // fixme use dedicated class
         return instrumentId + "_" + vendorId;
     }
 

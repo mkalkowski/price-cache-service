@@ -116,6 +116,7 @@ public class AeronPriceDistributionService implements PriceDistributionService {
         }
 
         try {
+            // fixme should use binary serialization for better perf, not JSON
             String jsonMessage = objectMapper.writeValueAsString(price);
             linkedBlockingQueue.offer(jsonMessage);
         } catch (JsonProcessingException e) {
